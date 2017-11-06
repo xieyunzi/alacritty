@@ -393,6 +393,10 @@ pub struct Config {
     #[serde(default="true_bool", deserialize_with = "default_true_bool")]
     live_config_reload: bool,
 
+    /// Send ESC together with alt-key
+    #[serde(default="true_bool")]
+    send_esc_with_alt: bool,
+
     /// Number of spaces in one tab
     #[serde(default="default_tabspaces", deserialize_with = "deserialize_tabspaces")]
     tabspaces: usize,
@@ -1371,6 +1375,12 @@ impl Config {
     #[inline]
     pub fn dynamic_title(&self) -> bool {
         self.dynamic_title
+    }
+
+    /// Should send ESC before character when alt is pressed
+    #[inline]
+    pub fn send_esc_with_alt(&self) -> bool {
+        self.send_esc_with_alt
     }
 
     pub fn load_from<P: Into<PathBuf>>(path: P) -> Result<Config> {
