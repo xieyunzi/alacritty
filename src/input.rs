@@ -674,6 +674,7 @@ mod tests {
                     },
                     key_bindings: &config.key_bindings()[..],
                     mouse_bindings: &config.mouse_bindings()[..],
+                    send_esc_with_alt: config.send_esc_with_alt(),
                 };
 
                 if let Event::WindowEvent { event: WindowEvent::MouseInput { state, button, .. }, .. } = $input {
