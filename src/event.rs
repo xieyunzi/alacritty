@@ -196,6 +196,7 @@ pub struct Processor<N> {
     suppress_chars: bool,
     last_modifiers: ModifiersState,
     pending_events: Vec<Event>,
+    send_esc_with_alt: bool,
 }
 
 /// Notify that the terminal was resized
@@ -239,6 +240,7 @@ impl<N: Notify> Processor<N> {
             suppress_chars: false,
             last_modifiers: Default::default(),
             pending_events: Vec::with_capacity(4),
+            send_esc_with_alt: config.send_esc_with_alt(),
         }
     }
 
@@ -397,6 +399,7 @@ impl<N: Notify> Processor<N> {
                 mouse_config: &self.mouse_config,
                 key_bindings: &self.key_bindings[..],
                 mouse_bindings: &self.mouse_bindings[..],
+                send_esc_with_alt: self.send_esc_with_alt,
             };
 
             let mut window_is_focused = window.is_focused;
@@ -446,5 +449,6 @@ impl<N: Notify> Processor<N> {
         self.key_bindings = config.key_bindings().to_vec();
         self.mouse_bindings = config.mouse_bindings().to_vec();
         self.mouse_config = config.mouse().to_owned();
+        self.send_esc_with_alt = config.send_esc_with_alt();
     }
 }

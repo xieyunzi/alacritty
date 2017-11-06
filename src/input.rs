@@ -45,6 +45,7 @@ pub struct Processor<'a, A: 'a> {
     pub mouse_bindings: &'a [MouseBinding],
     pub mouse_config: &'a config::Mouse,
     pub ctx: A,
+    pub send_esc_with_alt: bool,
 }
 
 pub trait ActionContext {
@@ -478,7 +479,11 @@ impl<'a, A: ActionContext + 'a> Processor<'a, A> {
             self.ctx.clear_selection();
 
             let utf8_len = c.len_utf8();
-            if *self.ctx.received_count() == 0 && self.ctx.last_modifiers().alt && utf8_len == 1 {
+            if self.send_esc_with_alt
+                    && self.ctx.last_modifiers().alt
+                    && *self.ctx.received_count() == 0
+                    && utf8_len == 1 {
+                // Send ESC before character
                 self.ctx.write_to_pty(b"\x1b".to_vec());
             }
 

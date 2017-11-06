@@ -278,6 +278,10 @@ pub struct Config {
     /// Live config reload
     #[serde(default="true_bool")]
     live_config_reload: bool,
+
+    /// Send ESC together with alt-key
+    #[serde(default="true_bool")]
+    send_esc_with_alt: bool,
 }
 
 fn default_padding() -> Delta {
@@ -330,6 +334,7 @@ impl Default for Config {
             env: Default::default(),
             hide_cursor_when_typing: Default::default(),
             live_config_reload: true,
+            send_esc_with_alt: true,
             padding: default_padding(),
         }
     }
@@ -1183,6 +1188,12 @@ impl Config {
     #[inline]
     pub fn live_config_reload(&self) -> bool {
         self.live_config_reload
+    }
+
+    /// Should send ESC before character when alt is pressed
+    #[inline]
+    pub fn send_esc_with_alt(&self) -> bool {
+        self.send_esc_with_alt
     }
 
     pub fn load_from<P: Into<PathBuf>>(path: P) -> Result<Config> {
